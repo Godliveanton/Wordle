@@ -1,0 +1,21 @@
+.greenBG {
+  background-color: green;
+}
+
+.homeComponent {
+  height: 100vh;
+}
+
+.title {
+  padding-top: 70px;
+  font-size: 60px;
+  letter-spacing: 5px;
+}
+
+.gridComponent {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
