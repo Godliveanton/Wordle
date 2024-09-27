@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const corsOptions = require("./config/corsOptions.js");
 require("dotenv/config");
 
 const { wordleRoutes } = require("./routes/wordleRoutes.js");
@@ -10,7 +11,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get("/", (request, response) => {
   console.log(request);
