@@ -34,12 +34,9 @@ const Home = () => {
     let newArr,
       leftout = [],
       indeces = Array(5).fill(0);
-    let data = await fetchData(
-      "https://technotes-api.onrender.com/wordle/guess",
-      {
-        word: userText.toLowerCase(),
-      }
-    );
+    let data = await fetchData("https://Wordle-api.onrender.com/wordle/guess", {
+      word: userText.toLowerCase(),
+    });
 
     if (data === userText.toLowerCase()) {
       if (userText.toLowerCase() === solution) {
@@ -123,7 +120,7 @@ const Home = () => {
         setSolution(solutionVal);
       } else {
         const data = await fetchData(
-          "https://technotes-api.onrender.com/wordle/solution"
+          "https://Wordle-api.onrender.com/wordle/solution"
         );
         dispatch(addSolution(data));
         setSolution(data);
