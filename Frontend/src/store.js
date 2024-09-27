@@ -5,6 +5,7 @@ const store = configureStore({
   reducer: {
     wordle: wordleReducer,
   },
+  devTools: false,
 });
 
 export default store;
