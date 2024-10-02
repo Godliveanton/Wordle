@@ -10,7 +10,6 @@ const Home = () => {
   const solutionVal = useSelector((state) => state.wordle.solution);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
 
   const fetchData = async (url, params = {}) => {
     try {
@@ -135,30 +134,27 @@ const Home = () => {
   }, [solutionVal, dispatch]);
 
   useEffect(() => {
-    if (isMobileDevice && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isMobileDevice]);
+  }, []);
 
   return (
     <div className="container-fluid bg-dark homeComponent">
       <div className="row text-light text-center title">
         <div className="col-12">WORDLE</div>
       </div>
-      {isMobileDevice && (
-        <input
-          ref={inputRef}
-          type="text"
-          style={{
-            position: "absolute",
-            opacity: 0,
-            height: 0,
-            width: 0,
-            zIndex: -1,
-          }}
-          autoFocus
-        />
-      )}
+      <input
+        ref={inputRef}
+        type="text"
+        style={{
+          position: "absolute",
+          opacity: 0,
+          height: 0,
+          width: 0,
+          zIndex: -1,
+        }}
+      />
       <div className="gridComponent">
         {texts.map((text, idx) => (
           <Grid
