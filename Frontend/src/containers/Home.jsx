@@ -29,6 +29,11 @@ const Home = () => {
   const [colorChanges, setColorChanges] = useState(
     Array(6).fill(Array(5).fill("None"))
   );
+  const [keyboardLayoutClassName, setKeyboardLayoutClassName] = useState([
+    ["", "", "", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", "", ""],
+  ]);
 
   const checkWord = async () => {
     let newArr,
@@ -75,6 +80,14 @@ const Home = () => {
       alert("Not a word");
     }
   };
+  const getIndexOfK = (arr, k) => {
+    for (var i = 0; i < arr.length; i++) {
+      var index = arr[i].indexOf(k);
+      if (index > -1) {
+        return [i, index];
+      }
+    }
+  };
 
   const updateState = (newArr) => {
     setTexts((prevTexts) => {
@@ -86,6 +99,24 @@ const Home = () => {
       const newColorChanges = [...prevColorChanges];
       newColorChanges[index - 1] = newArr;
       return newColorChanges;
+    });
+    newArr.forEach((val, index) => {
+      const idx = getIndexOfK(keyboardLayout, userText[index].toUpperCase());
+      const idx0 = idx[0],
+        idx1 = idx[1];
+      if (val === "G" || val === "Y") {
+        setKeyboardLayoutClassName((prevLayout) => {
+          const newLayout = [...prevLayout];
+          newLayout[idx0][idx1] = "G";
+          return newLayout;
+        });
+      } else {
+        setKeyboardLayoutClassName((prevLayout) => {
+          const newLayout = [...prevLayout];
+          newLayout[idx0][idx1] = "R";
+          return newLayout;
+        });
+      }
     });
     setUserText("");
     setIndex((prevIndex) => prevIndex + 1);
@@ -167,12 +198,18 @@ const Home = () => {
       <div className="keyboard-container">
         {keyboardLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="keyboard-row">
-            {row.map((key) => (
+            {row.map((key, colIndex) => (
               <button
                 key={key}
                 onClick={() => handleKeyPress(key)}
                 className={`keyboard-key ${
                   key === "Backspace" || key === "Enter" ? "wide-key" : ""
+                } ${
+                  keyboardLayoutClassName[rowIndex][colIndex] === "G"
+                    ? "bg-success"
+                    : keyboardLayoutClassName[rowIndex][colIndex] === "R"
+                    ? "bg-danger"
+                    : ""
                 }`}
               >
                 {key === "Backspace" ? "⌫" : key === "Enter" ? "⏎" : key}
