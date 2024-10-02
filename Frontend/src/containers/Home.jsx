@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import "./Home.scss";
 import Grid from "../component/Grid";
 import axios from "axios";
@@ -9,6 +9,8 @@ import { addSolution } from "../features/wordleSlice";
 const Home = () => {
   const solutionVal = useSelector((state) => state.wordle.solution);
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
+  const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
 
   const fetchData = async (url, params = {}) => {
     try {
@@ -132,11 +134,31 @@ const Home = () => {
     fetchSolution();
   }, [solutionVal, dispatch]);
 
+  useEffect(() => {
+    if (isMobileDevice && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isMobileDevice]);
+
   return (
     <div className="container-fluid bg-dark homeComponent">
       <div className="row text-light text-center title">
         <div className="col-12">WORDLE</div>
       </div>
+      {isMobileDevice && (
+        <input
+          ref={inputRef}
+          type="text"
+          style={{
+            position: "absolute",
+            opacity: 0,
+            height: 0,
+            width: 0,
+            zIndex: -1,
+          }}
+          autoFocus
+        />
+      )}
       <div className="gridComponent">
         {texts.map((text, idx) => (
           <Grid
