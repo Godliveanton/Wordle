@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import "./Home.scss";
 import Grid from "../component/Grid";
 import axios from "axios";
@@ -9,7 +9,6 @@ import { addSolution } from "../features/wordleSlice";
 const Home = () => {
   const solutionVal = useSelector((state) => state.wordle.solution);
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
 
   const fetchData = async (url, params = {}) => {
     try {
@@ -92,6 +91,18 @@ const Home = () => {
     setIndex((prevIndex) => prevIndex + 1);
   };
 
+  const handleKeyPress = (key) => {
+    if (key === "Backspace") {
+      setUserText((prevUserText) => prevUserText.slice(0, -1));
+    } else if (key === "Enter" && userText.length === 5) {
+      checkWord();
+    } else if (key === "Enter") {
+      alert("Not Enough Letters");
+    } else if (userText.length < 5) {
+      setUserText((prevUserText) => `${prevUserText}${key}`);
+    }
+  };
+
   const handleUserKeyPress = useCallback(
     (event) => {
       const { key, keyCode } = event;
@@ -133,29 +144,17 @@ const Home = () => {
     fetchSolution();
   }, [solutionVal, dispatch]);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+  const keyboardLayout = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+    ["Backspace", "Z", "X", "C", "V", "B", "N", "M", "Enter"],
+  ];
 
   return (
-    <div className="container-fluid bg-dark homeComponent">
+    <div className="container-fluid homeComponent">
       <div className="row text-light text-center title">
         <div className="col-12">WORDLE</div>
       </div>
-      <input
-        ref={inputRef}
-        type="text"
-        style={{
-          position: "absolute",
-          top: "-100px", // Off-screen positioning
-          left: "-100px",
-          width: "1px", // Minimal size to keep it visible
-          height: "1px",
-        }}
-        autoFocus
-      />
       <div className="gridComponent">
         {texts.map((text, idx) => (
           <Grid
@@ -163,6 +162,23 @@ const Home = () => {
             userText={index === idx + 1 ? userText : text}
             colorChange={colorChanges[idx]}
           />
+        ))}
+      </div>
+      <div className="keyboard-container">
+        {keyboardLayout.map((row, rowIndex) => (
+          <div key={rowIndex} className="keyboard-row">
+            {row.map((key) => (
+              <button
+                key={key}
+                onClick={() => handleKeyPress(key)}
+                className={`keyboard-key ${
+                  key === "Backspace" || key === "Enter" ? "wide-key" : ""
+                }`}
+              >
+                {key === "Backspace" ? "⌫" : key === "Enter" ? "⏎" : key}
+              </button>
+            ))}
+          </div>
         ))}
       </div>
       <Message

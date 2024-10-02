@@ -3,7 +3,8 @@
 }
 
 .homeComponent {
-  height: 100vh;
+  height: 100%;
+  background-color: black;
 }
 
 .title {
@@ -18,4 +19,68 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.keyboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.keyboard-key {
+  padding: 15px 10px;
+  margin: 5px;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  flex: 1;
+  max-width: 8%;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.wide-key {
+  max-width: 16%;
+  flex: 1.5;
+}
+
+.keyboard-key:hover {
+  background-color: #ddd;
+}
+
+@media (max-width: 600px) {
+  .keyboard-key {
+    font-size: 1.2rem;
+    padding: 10px 8px;
+    max-width: 10%;
+  }
+
+  .wide-key {
+    max-width: 20%;
+    flex: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .keyboard-key {
+    font-size: 1rem;
+    padding: 8px 6px;
+    max-width: 12%;
+  }
+
+  .wide-key {
+    max-width: 25%;
+    flex: 2.5;
+  }
 }
