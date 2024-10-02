@@ -149,11 +149,12 @@ const Home = () => {
         type="text"
         style={{
           position: "absolute",
-          opacity: 0,
-          height: 0,
-          width: 0,
-          zIndex: -1,
+          top: "-100px", // Off-screen positioning
+          left: "-100px",
+          width: "1px", // Minimal size to keep it visible
+          height: "1px",
         }}
+        autoFocus
       />
       <div className="gridComponent">
         {texts.map((text, idx) => (
